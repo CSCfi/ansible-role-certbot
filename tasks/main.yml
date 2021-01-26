@@ -2,16 +2,12 @@
 # tasks file for ansible-role-certbot
 - debug:
     msg: OS {{ ansible_os_family }}-{{ ansible_distribution_major_version | int }}
-  tags:
-    - always
 
 - include_vars: "{{ item }}"
   with_first_found:
     - "../vars/{{ ansible_distribution }}.yml"
     - "../vars/{{ ansible_os_family }}-{{ ansible_distribution_major_version | int }}.yml"
     - "../vars/main.yml"
-  tags:
-    - always
 
 - name: Install Certbot
   package:
@@ -19,8 +15,6 @@
       - "{{ certbot_package_name }}"
       - "{{ python_apache_certbot_package_name }}" 
     state: latest
-  tags:
-    - always
 
 - name: Create directory structure
   file:
@@ -31,25 +25,15 @@
     recurse: yes
     state: directory
   with_items: ["accounts", "accounts/acme.sectigo.com", "accounts/acme.sectigo.com/v2", "accounts/acme.sectigo.com/v2/OV", "accounts/acme.sectigo.com/v2/OV/{{ account }}"]
-  tags: 
-    - always
 
 - copy: content="{{ meta|to_json }}" dest=/etc/letsencrypt/accounts/acme.sectigo.com/v2/OV/{{ account }}/meta.json
-  tags:
-    - always
 
 - copy: content="{{ private_key|to_json }}" dest=/etc/letsencrypt/accounts/acme.sectigo.com/v2/OV/{{ account }}/private_key.json
-  tags:
-    - always
 
 - copy: content="{{ regr|to_json }}" dest=/etc/letsencrypt/accounts/acme.sectigo.com/v2/OV/{{ account }}/reqr.json
-  tags:
-    - always
 
 - name: certbot | cron.d | setup
   copy: content="{{ cron }}" dest=/etc/cron.d/certbot mode=755 owner=root group=root
-  tags:
-    - always
 
 - name: Determine live directory 
   find:
@@ -57,8 +41,6 @@
     recurse: no
     file_type: directory
   register: find_result
-  tags:
-    - always
 
 - shell: certbot certonly --apache --server https://acme.sectigo.com/v2/OV --non-interactive --agree-tos --domain {{ domains }}
   when find_result.files[0].path is not defined
@@ -69,13 +51,9 @@
     recurse: no
     file_type: directory
   register: find_result
-  tags:
-    - always
 
 - debug:
     msg: "{{ find_result.files[0].path }}"
-  tags:
-    - always
 
 - name: Apache | Certificates | SSL | Configure
   lineinfile: dest={{ apache_sslconf }} regexp="^#?\s*({{ apache_certs.key }}\s*)" backrefs=yes  line="\\1 {{ apache_certs.value }}"
@@ -87,5 +65,4 @@
   notify: restart apache
   loop_control:
     loop_var: apache_certs
-  tags:
-    - apache
+  when: apache | bool
