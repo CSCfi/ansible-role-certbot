@@ -1,0 +1,6 @@
+# vars file for ansible-role-certbot
+
+apache_service_name: RedHat
+
+certbot_package_name: certbot
+python_apache_certbot_package_name: python2-certbot-apache

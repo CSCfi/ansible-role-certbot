@@ -1,0 +1,9 @@
+---
+# defaults file for ansible-role-certbot
+account: "{{ vault_sectigo_account }}"
+meta: "{{ vault_sectigo_meta }}"
+regr: "{{ vault_sectigo_regr }}"
+private_key: "{{ vault_sectigo_private_key }}"
+apache: false
+
+cron: '30 6 * * * certbot renew --post-hook "systemctl reload httpd"'

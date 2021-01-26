@@ -1,0 +1,6 @@
+---
+# handlers file for ansible-role-certbot
+- name: restart apache
+  service:
+    name: "{{ apache_service_name }}"
+    state: restarted
