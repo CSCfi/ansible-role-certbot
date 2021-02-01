@@ -12,23 +12,23 @@ When using vault, use 'vault_sectigo_' prefix with variables.
 vault_sectigo_account: Account directory under /etc/letsencrypt/accounts/acme.sectigo.com/v2/OV/
 
 vault_sectigo_meta:
-  - creation_dt: 
-  - creation_host: 
+  creation_dt: 
+  creation_host: 
 
 vault_sectigo_regr:
-  - body: "{}"
-  - uri: API uri
+  body: {}
+  uri: API uri
 
 vault_sectigo_private_key:
-  - e: AQAB
-  - d:
-  - n:
-  - q:
-  - p:
-  - kty: RSA
-  - qi:
-  - dp:
-  - dq:
+  e: AQAB
+  d:
+  n:
+  q:
+  p:
+  kty: RSA
+  qi:
+  dp:
+  dq:
 
 apache: ( True | False ) Configure Certs to apache?
 domain: Which domains to request if needed.
