@@ -30,22 +30,14 @@
 
 - copy: content="{{ private_key|to_json }}" dest=/etc/letsencrypt/accounts/acme.sectigo.com/v2/OV/{{ account }}/private_key.json
 
-- copy: content="{{ regr|to_json }}" dest=/etc/letsencrypt/accounts/acme.sectigo.com/v2/OV/{{ account }}/reqr.json
+- copy: content="{{ regr|to_json }}" dest=/etc/letsencrypt/accounts/acme.sectigo.com/v2/OV/{{ account }}/regr.json
 
 - name: certbot | cron.d | setup
   copy: content="{{ cron }}" dest=/etc/cron.d/certbot mode=755 owner=root group=root
 
-- name: Determine live directory 
-  find:
-    paths: /etc/letsencrypt/live
-    recurse: no
-    file_type: directory
-  register: find_result
-
 - shell: certbot certonly --apache --server https://acme.sectigo.com/v2/OV --non-interactive --agree-tos --domain {{ domains }}
-  when find_result.files[0].path is not defined
 
-- name: Determine live directory
+- name: Determine live directory 
   find:
     paths: /etc/letsencrypt/live
     recurse: no
