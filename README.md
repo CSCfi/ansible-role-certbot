@@ -8,7 +8,7 @@ Role Variables
 --------------
 
 When using vault, use 'vault_sectigo_' prefix with variables.
-
+```
 vault_sectigo_account: Account directory under /etc/letsencrypt/accounts/acme.sectigo.com/v2/OV/
 
 vault_sectigo_meta:
@@ -30,8 +30,8 @@ vault_sectigo_private_key:
   dp:
   dq:
 
-apache: ( True | False ) Configure Certs to apache?
 domain: Which domains to request if needed.
+```
 
 Example Playbook
 ----------------
