@@ -30,7 +30,7 @@ vault_sectigo_private_key:
   dp:
   dq:
 
-domain: Which domains to request if needed.
+sectigo_domains: Which domain(s) to request if needed.
 ```
 
 Example Playbook
@@ -40,7 +40,7 @@ Including an example of how to use your role (for instance, with variables passe
 
     - hosts: servers
       roles:
-         - { role: CSCfi.certbot, apache: True }
+         - { role: CSCfi.certbot }
 
 License
 -------

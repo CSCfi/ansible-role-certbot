@@ -24,37 +24,15 @@
     mode: 0755
     recurse: yes
     state: directory
-  with_items: ["accounts", "accounts/acme.sectigo.com", "accounts/acme.sectigo.com/v2", "accounts/acme.sectigo.com/v2/OV", "accounts/acme.sectigo.com/v2/OV/{{ account }}"]
+  with_items: ["accounts", "accounts/acme.sectigo.com", "accounts/acme.sectigo.com/v2", "accounts/acme.sectigo.com/v2/OV", "accounts/acme.sectigo.com/v2/OV/{{ sectigo_account }}"]
 
-- copy: content="{{ meta|to_json }}" dest=/etc/letsencrypt/accounts/acme.sectigo.com/v2/OV/{{ account }}/meta.json
+- copy: content="{{ sectigo_meta|to_json }}" dest=/etc/letsencrypt/accounts/acme.sectigo.com/v2/OV/{{ sectigo_account }}/meta.json
 
-- copy: content="{{ private_key|to_json }}" dest=/etc/letsencrypt/accounts/acme.sectigo.com/v2/OV/{{ account }}/private_key.json
+- copy: content="{{ sectigo_private_key|to_json }}" dest=/etc/letsencrypt/accounts/acme.sectigo.com/v2/OV/{{ sectigo_account }}/private_key.json
 
-- copy: content="{{ regr|to_json }}" dest=/etc/letsencrypt/accounts/acme.sectigo.com/v2/OV/{{ account }}/regr.json
+- copy: content="{{ sectigo_regr|to_json }}" dest=/etc/letsencrypt/accounts/acme.sectigo.com/v2/OV/{{ sectigo_account }}/regr.json
 
 - name: certbot | cron.d | setup
-  copy: content="{{ cron }}" dest=/etc/cron.d/certbot mode=755 owner=root group=root
+  copy: content="{{ sectigo_cron }}" dest=/etc/cron.d/certbot mode=755 owner=root group=root
 
-- shell: certbot certonly --apache --server https://acme.sectigo.com/v2/OV --non-interactive --agree-tos --domain {{ domains }}
-
-- name: Determine live directory 
-  find:
-    paths: /etc/letsencrypt/live
-    recurse: no
-    file_type: directory
-  register: find_result
-
-- debug:
-    msg: "{{ find_result.files[0].path }}"
-
-- name: Apache | Certificates | SSL | Configure
-  lineinfile: dest={{ apache_sslconf }} regexp="^#?\s*({{ apache_certs.key }}\s*)" backrefs=yes  line="\\1 {{ apache_certs.value }}"
-  with_items:
-    - { key: 'SSLCertificateFile', value: "/etc/letsencrypt/live/{{ find_result.files[0].path|basename }}/cert.pem" }
-    - { key: 'SSLCertificateKeyFile', value: "/etc/letsencrypt/live/{{ find_result.files[0].path|basename }}/privkey.pem" }
-    - { key: 'SSLCertificateChainFile', value: "/etc/letsencrypt/live/{{ find_result.files[0].path|basename }}/chain.pem" }
-  # - { key: 'SSLCACertificateFile', value: "{{ apache_crtdir}}/certs/{{ apache_fqdn }}.cabundle.crt" }
-  notify: restart apache
-  loop_control:
-    loop_var: apache_certs
-  when: apache | bool
+- shell: certbot certonly --apache --server https://acme.sectigo.com/v2/OV --non-interactive --agree-tos --domain {{ sectigo_domains }}
