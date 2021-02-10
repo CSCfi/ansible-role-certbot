@@ -1,5 +1,6 @@
 galaxy_info:
   author: CSCfi
+  role_name: Certbot
   description: Certbot installation role for sectigo
   company: CSC
 
