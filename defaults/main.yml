@@ -6,7 +6,7 @@ sectigo_meta: "{{ vault_sectigo_meta }}"
 sectigo_regr: "{{ vault_sectigo_regr }}"
 sectigo_private_key: "{{ vault_sectigo_private_key }}"
 
-sectigo_domains: "{{ sectigo_domains | default(ansible_fqdn) }}"
+sectigo_domains: "{{ ansible_fqdn }}"
 
 # example with hook:
 # sectigo_cron: '30 6 * * * certbot renew --post-hook "systemctl reload httpd"'
