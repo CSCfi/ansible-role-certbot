@@ -1,13 +1,12 @@
 Role Name
 =========
-This role is not yet tested!
 
 This role installs certbot on RedHat machines (can be extended other distros as well). This role is created taken sectigo on account with current limitations with agreement and apis.
 
 Role Variables
 --------------
 
-When using vault, use 'vault_sectigo_' prefix with variables.
+When using vault, use 'vault_sectigo_' prefix with variables otherwise just 'sectigo_' prefix is used with variables (except with variable sectigo_domains which is not vaulted variable).
 ```
 vault_sectigo_account: Account directory under /etc/letsencrypt/accounts/acme.sectigo.com/v2/OV/
 
@@ -36,11 +35,9 @@ sectigo_domains: Which domain(s) to request if needed.
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
     - hosts: servers
       roles:
-         - { role: CSCfi.certbot }
+         - { role: CSCfi.certbot, sectigo_cron: '30 6 * * * certbot renew --post-hook "systemctl reload httpd"'}
 
 License
 -------
