@@ -35,4 +35,8 @@
 - name: certbot | cron.d | setup
   copy: content="{{ sectigo_cron }}" dest=/etc/cron.d/certbot mode=755 owner=root group=root
 
-- shell: certbot certonly --apache --server https://acme.sectigo.com/v2/OV --non-interactive --agree-tos --domain {{ sectigo_domains }}
+- shell: certbot certonly --apache --server https://acme.sectigo.com/v2/OV --non-interactive --agree-tos --domain {{ sectigo_domains }} {{ sectigo_san_domains }}
+  when: sectigo_san_domains is defined
+
+- shell: certbot certonly --apache --server https://acme.sectigo.com/v2/OV --non-interactive --agree-tos --domain {{ sectigo_domains }} 
+  when: sectigo_san_domains is not defined
