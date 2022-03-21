@@ -9,6 +9,7 @@
     - "../vars/{{ ansible_os_family }}-{{ ansible_distribution_major_version | int }}.yml"
     - "../vars/main.yml"
 
+# Installing and registering certbot
 - name: Install Certbot
   package:
     name:
@@ -16,27 +17,34 @@
       - "{{ python_apache_certbot_package_name }}" 
     state: latest
 
-- name: Create directory structure
-  file:
-    path: "/etc/letsencrypt/{{ item }}"
-    owner: root
-    group: root
-    mode: 0755
-    recurse: yes
-    state: directory
-  with_items: ["accounts", "accounts/acme.sectigo.com", "accounts/acme.sectigo.com/v2", "accounts/acme.sectigo.com/v2/OV", "accounts/acme.sectigo.com/v2/OV/{{ sectigo_account }}"]
+- name: Register and obtain certs
+  block:
+    - shell: certbot register --server https://acme.sectigo.com/v2/OV --agree-tos --eab-kid {{ sectigo_eab-kid }} --eab-hmac-key {{ sectigo_eab-hmac-key }} --no-eff-email --email {{ sectigo_emailAddress }}
 
-- copy: content="{{ sectigo_meta|to_json }}" dest=/etc/letsencrypt/accounts/acme.sectigo.com/v2/OV/{{ sectigo_account }}/meta.json
+    - name: certbot | cron.d | setup
+      copy: content="{{ sectigo_cron }}" dest=/etc/cron.d/certbot mode=755 owner=root group=root
 
-- copy: content="{{ sectigo_private_key|to_json }}" dest=/etc/letsencrypt/accounts/acme.sectigo.com/v2/OV/{{ sectigo_account }}/private_key.json
+    - shell: certbot certonly --apache --server https://acme.sectigo.com/v2/OV --non-interactive --agree-tos --domain {{ sectigo_domains }} {{ sectigo_san_domains }}
+      when: sectigo_san_domains is defined
 
-- copy: content="{{ sectigo_regr|to_json }}" dest=/etc/letsencrypt/accounts/acme.sectigo.com/v2/OV/{{ sectigo_account }}/regr.json
+    - shell: certbot certonly --apache --server https://acme.sectigo.com/v2/OV --non-interactive --agree-tos --domain {{ sectigo_domains }} 
+      when: sectigo_san_domains is not defined
 
-- name: certbot | cron.d | setup
-  copy: content="{{ sectigo_cron }}" dest=/etc/cron.d/certbot mode=755 owner=root group=root
+  when: (sectigo_eab-kid is defined) and (sectigo_eab-hmac-key is defined) and (sectigo_emailAddress is defined) and (sectigo_domains is defined)
 
-- shell: certbot certonly --apache --server https://acme.sectigo.com/v2/OV --non-interactive --agree-tos --domain {{ sectigo_domains }} {{ sectigo_san_domains }}
-  when: sectigo_san_domains is defined
+# - name: Create directory structure
+#   file:
+#     path: "/etc/letsencrypt/{{ item }}"
+#     owner: root
+#     group: root
+#     mode: 0755
+#     recurse: yes
+#     state: directory
+#   with_items: ["accounts", "accounts/acme.sectigo.com", "accounts/acme.sectigo.com/v2", "accounts/acme.sectigo.com/v2/OV", "accounts/acme.sectigo.com/v2/OV/{{ sectigo_account }}"]
 
-- shell: certbot certonly --apache --server https://acme.sectigo.com/v2/OV --non-interactive --agree-tos --domain {{ sectigo_domains }} 
-  when: sectigo_san_domains is not defined
+# - copy: content="{{ sectigo_meta|to_json }}" dest=/etc/letsencrypt/accounts/acme.sectigo.com/v2/OV/{{ sectigo_account }}/meta.json
+
+# - copy: content="{{ sectigo_private_key|to_json }}" dest=/etc/letsencrypt/accounts/acme.sectigo.com/v2/OV/{{ sectigo_account }}/private_key.json
+
+# - copy: content="{{ sectigo_regr|to_json }}" dest=/etc/letsencrypt/accounts/acme.sectigo.com/v2/OV/{{ sectigo_account }}/regr.json
+
