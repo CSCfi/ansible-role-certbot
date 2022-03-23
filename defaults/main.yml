@@ -1,10 +1,10 @@
 ---
 # defaults file for ansible-role-certbot
 
-sectigo_account: "{{ vault_sectigo_account }}"
-sectigo_meta: "{{ vault_sectigo_meta }}"
-sectigo_regr: "{{ vault_sectigo_regr }}"
-sectigo_private_key: "{{ vault_sectigo_private_key }}"
+# sectigo_account: "{{ vault_sectigo_account }}"
+# sectigo_meta: "{{ vault_sectigo_meta }}"
+# sectigo_regr: "{{ vault_sectigo_regr }}"
+# sectigo_private_key: "{{ vault_sectigo_private_key }}"
 
 sectigo_domains: "{{ ansible_fqdn }}"
 

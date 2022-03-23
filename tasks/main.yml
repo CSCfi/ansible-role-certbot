@@ -19,7 +19,7 @@
 
 - name: Register and obtain certs
   block:
-    - shell: certbot register --server https://acme.sectigo.com/v2/OV --agree-tos --eab-kid {{ sectigo_eab-kid }} --eab-hmac-key {{ sectigo_eab-hmac-key }} --no-eff-email --email {{ sectigo_emailAddress }}
+    - shell: certbot register --server https://acme.sectigo.com/v2/OV --agree-tos --eab-kid {{ sectigo_eab_kid }} --eab-hmac-key {{ sectigo_eab_hmac_key }} --no-eff-email --email {{ sectigo_emailAddress }}
 
     - name: certbot | cron.d | setup
       copy: content="{{ sectigo_cron }}" dest=/etc/cron.d/certbot mode=755 owner=root group=root
@@ -30,7 +30,7 @@
     - shell: certbot certonly --apache --server https://acme.sectigo.com/v2/OV --non-interactive --agree-tos --domain {{ sectigo_domains }} 
       when: sectigo_san_domains is not defined
 
-  when: (sectigo_eab-kid is defined) and (sectigo_eab-hmac-key is defined) and (sectigo_emailAddress is defined) and (sectigo_domains is defined)
+  when: (sectigo_eab_kid is defined) and (sectigo_eab_hmac_key is defined) and (sectigo_emailAddress is defined) and (sectigo_domains is defined)
 
 # - name: Create directory structure
 #   file:
