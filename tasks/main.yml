@@ -10,12 +10,18 @@
     - "../vars/main.yml"
 
 # Installing and registering certbot
+- name: check if Certbot is already registered
+  stat:
+    path: "/etc/letsencrypt/accounts/acme.sectigo.com/"
+  register: isRegistered
+
 - name: Install Certbot
   package:
     name:
       - "{{ certbot_package_name }}"
       - "{{ python_apache_certbot_package_name }}" 
     state: latest
+  when: not isRegistered.stat.exists
 
 - name: Register and obtain certs
   block:
@@ -30,7 +36,7 @@
     - shell: certbot certonly --apache --server https://acme.sectigo.com/v2/OV --non-interactive --agree-tos --domain {{ sectigo_domains }} 
       when: sectigo_san_domains is not defined
 
-  when: (sectigo_eab_kid is defined) and (sectigo_eab_hmac_key is defined) and (sectigo_emailAddress is defined) and (sectigo_domains is defined)
+  when: (sectigo_eab_kid is defined) and (sectigo_eab_hmac_key is defined) and (sectigo_emailAddress is defined) and (sectigo_domains is defined) and (not isRegistered.stat.exists)
 
 # - name: Create directory structure
 #   file:
