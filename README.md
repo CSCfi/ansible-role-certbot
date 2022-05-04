@@ -1,16 +1,18 @@
 Role Name
 =========
 
-This role installs certbot on RedHat machines (can be extended other distros as well). This role is created taken sectigo on account with current limitations with agreement and apis.
+This role installs certbot on RedHat machines (can be extended other distros as
+well). This role is created taken sectigo on account with current limitations
+with agreement and apis.
 
 Role Variables
 --------------
 
-When using vault, use 'vault_sectigo_' prefix with variables otherwise just 'sectigo_' prefix is used with variables (except with variable sectigo_domains which is not vaulted variable).
-```
-sectigo_domains: Which domain(s) to request if needed.
-sectigo_san_domains: If SAN domain(s) is needed on certificate.
-```
+When using vault, use 'vault_sectigo_' prefix with variables otherwise just
+'sectigo_' prefix is used with variables (except with variable sectigo_domains
+which is not vaulted variable).
+
+For variable content examples, see defaults/main.yml.
 
 Example Playbook
 ----------------
