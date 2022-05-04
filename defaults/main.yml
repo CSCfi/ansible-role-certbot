@@ -1,8 +1,8 @@
 ---
 # defaults file for ansible-role-certbot
 
-sectigo_domains: "{{ ansible_fqdn }}"
-#sectigo_san_domains:  foo.bar,bar.foo
+sectigo_domains:       "{{ ansible_fqdn }}"
+#sectigo_san_domains:  server1.domain.example,server2.domain.example
 #sectigo_emailAddress: contact@org
 
 #sectigo_eab_kid:      received_from_provider
