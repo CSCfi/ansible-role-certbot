@@ -46,8 +46,7 @@ Example Playbook when requesting certificate with SAN
 
     - hosts: servers
       roles:
-         - { role: CSCfi.certbot, sectigo_cron: '30 6 * * * certbot renew --post-hook "systemctl reload httpd"', sectigo_san_domains: " --domain server1.domain.example --domain server2.domain.example"}
-         
+         - { role: CSCfi.certbot, sectigo_cron: '30 6 * * * certbot renew --post-hook "systemctl reload httpd"', sectigo_san_domains: "server1.domain.example,server2.domain.example"}
 
 License
 -------
