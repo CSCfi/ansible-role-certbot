@@ -35,22 +35,9 @@
 
     - shell: certbot certonly --apache --server https://acme.sectigo.com/v2/OV --non-interactive --agree-tos --domain {{ sectigo_domains }} 
       when: sectigo_san_domains is not defined
-
-  when: (sectigo_eab_kid is defined) and (sectigo_eab_hmac_key is defined) and (sectigo_emailAddress is defined) and (sectigo_domains is defined) and (not isRegistered.stat.exists)
-
-# - name: Create directory structure
-#   file:
-#     path: "/etc/letsencrypt/{{ item }}"
-#     owner: root
-#     group: root
-#     mode: 0755
-#     recurse: yes
-#     state: directory
-#   with_items: ["accounts", "accounts/acme.sectigo.com", "accounts/acme.sectigo.com/v2", "accounts/acme.sectigo.com/v2/OV", "accounts/acme.sectigo.com/v2/OV/{{ sectigo_account }}"]
-
-# - copy: content="{{ sectigo_meta|to_json }}" dest=/etc/letsencrypt/accounts/acme.sectigo.com/v2/OV/{{ sectigo_account }}/meta.json
-
-# - copy: content="{{ sectigo_private_key|to_json }}" dest=/etc/letsencrypt/accounts/acme.sectigo.com/v2/OV/{{ sectigo_account }}/private_key.json
-
-# - copy: content="{{ sectigo_regr|to_json }}" dest=/etc/letsencrypt/accounts/acme.sectigo.com/v2/OV/{{ sectigo_account }}/regr.json
-
+  when:
+    - sectigo_eab_kid is defined
+    - sectigo_eab_hmac_key is defined
+    - sectigo_emailAddress is defined
+    - sectigo_domains is defined
+    - not isRegistered.stat.exists
