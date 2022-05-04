@@ -7,7 +7,14 @@
 # sectigo_private_key: "{{ vault_sectigo_private_key }}"
 
 sectigo_domains: "{{ ansible_fqdn }}"
+#sectigo_san_domains:  foo.bar,bar.foo
+#sectigo_emailAddress: contact@org
+
+#sectigo_eab_kid:      received_from_provider
+#sectigo_eab_hmac_key: received_from_provider
 
 # example with hook:
 # sectigo_cron: '30 6 * * * certbot renew --post-hook "systemctl reload httpd"'
+# example with proxy:
+# sectigo_cron: '30 6 * * * http_proxy=http://foobar.foo:3123 certbot renew'
 sectigo_cron: '30 6 * * * certbot renew'
