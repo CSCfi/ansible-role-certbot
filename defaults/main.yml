@@ -11,3 +11,5 @@ sectigo_domains: "{{ ansible_fqdn }}"
 # example with hook:
 # sectigo_cron: '30 6 * * * certbot renew --post-hook "systemctl reload httpd"'
 sectigo_cron: '30 6 * * * certbot renew'
+
+sectigo_additional_parameters: ""

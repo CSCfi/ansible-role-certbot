@@ -40,6 +40,12 @@ Example Playbook
       roles:
          - { role: CSCfi.certbot, sectigo_cron: '30 6 * * * certbot renew --post-hook "systemctl reload httpd"'}
 
+Example Playbook with additional parameters - example RSA type instead of ecdsa.
+----------------
+
+    - hosts: servers
+      roles:
+         - { role: CSCfi.certbot, sectigo_cron: '30 6 * * * certbot renew --post-hook "systemctl reload httpd"', sectigo_additional_parameters: " --key-type rsa --rsa-key-size 4096"}
 
 Example Playbook when requesting certificate with SAN
 ----------------
@@ -48,7 +54,6 @@ Example Playbook when requesting certificate with SAN
       roles:
          - { role: CSCfi.certbot, sectigo_cron: '30 6 * * * certbot renew --post-hook "systemctl reload httpd"', sectigo_san_domains: " --domain server1.domain.example --domain server2.domain.example"}
          
-
 License
 -------
 
