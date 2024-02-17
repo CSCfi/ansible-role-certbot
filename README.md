@@ -1,7 +1,7 @@
 Role Name
 =========
 
-This role installs certbot on RedHat machines (can be extended other distros as well). This role is created taken sectigo on account with current limitations with agreement and apis.
+This role installs certbot on RHEL or Debian variants. This role is created taken sectigo on account with current limitations with agreement and apis.
 
 Role Variables
 --------------
