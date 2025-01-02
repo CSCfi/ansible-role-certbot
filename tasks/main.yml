@@ -28,7 +28,7 @@
     - shell: certbot register --server https://acme.sectigo.com/v2/OV --agree-tos --eab-kid {{ sectigo_eab_kid }} --eab-hmac-key {{ sectigo_eab_hmac_key }} --no-eff-email --email {{ sectigo_emailAddress }}
 
     - name: certbot | cron.d | setup
-      copy: content="{{ sectigo_cron }}" dest=/etc/cron.d/certbot mode=755 owner=root group=root
+      copy: content="{{ sectigo_cron }}" dest=/etc/cron.d/certbot mode=640 owner=root group=root
 
     - shell: certbot certonly --apache --server https://acme.sectigo.com/v2/OV --non-interactive --agree-tos --domain {{ sectigo_domains }} {{ sectigo_san_domains }} {{ sectigo_additional_parameters }}
       when: sectigo_san_domains is defined
