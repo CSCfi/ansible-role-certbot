@@ -1,15 +1,17 @@
 ---
 # defaults file for ansible-role-certbot
 
-# sectigo_account: "{{ vault_sectigo_account }}"
-# sectigo_meta: "{{ vault_sectigo_meta }}"
-# sectigo_regr: "{{ vault_sectigo_regr }}"
-# sectigo_private_key: "{{ vault_sectigo_private_key }}"
+sectigo_domains:       "{{ ansible_fqdn }}"
+#sectigo_san_domains:  server1.domain.example,server2.domain.example
+#sectigo_emailAddress: contact@org
 
-sectigo_domains: "{{ ansible_fqdn }}"
+#sectigo_eab_kid:      received_from_provider
+#sectigo_eab_hmac_key: received_from_provider
 
 # example with hook:
 # sectigo_cron: '30 6 * * * certbot renew --post-hook "systemctl reload httpd"'
+# example with proxy:
+# sectigo_cron: '30 6 * * * http_proxy=http://foobar.foo:3123 certbot renew'
 sectigo_cron: '30 6 * * * certbot renew'
 
 sectigo_additional_parameters: ""
