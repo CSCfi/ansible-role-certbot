@@ -11,8 +11,8 @@ When using vault, use 'vault_sectigo_' prefix with variables otherwise just 'sec
 vault_sectigo_account: Account directory under /etc/letsencrypt/accounts/acme.sectigo.com/v2/OV/
 
 vault_sectigo_meta:
-  creation_dt: 
-  creation_host: 
+  creation_dt:
+  creation_host:
 
 vault_sectigo_regr:
   body: {}
@@ -31,6 +31,8 @@ vault_sectigo_private_key:
 
 sectigo_domains: Which domain(s) to request if needed.
 sectigo_san_domains: If SAN domains is needed on certificate.
+
+sectigo_server: Server URL for the ACME service. For Harica every account has a unique server URL, so this needs to be given as a parameter. Defaulted to the old Sectigo URL for now to avoid breaking anyone's setup.
 ```
 
 Example Playbook
@@ -53,7 +55,7 @@ Example Playbook when requesting certificate with SAN
     - hosts: servers
       roles:
          - { role: CSCfi.certbot, sectigo_cron: '30 6 * * * certbot renew --post-hook "systemctl reload httpd"', sectigo_san_domains: " --domain server1.domain.example --domain server2.domain.example"}
-         
+
 License
 -------
 

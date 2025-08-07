@@ -1,6 +1,8 @@
 ---
 # defaults file for ansible-role-certbot
 
+sectigo_server: "https://acme.sectigo.com/v2/OV"
+
 # sectigo_account: "{{ vault_sectigo_account }}"
 # sectigo_meta: "{{ vault_sectigo_meta }}"
 # sectigo_regr: "{{ vault_sectigo_regr }}"
