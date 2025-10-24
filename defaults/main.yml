@@ -10,6 +10,8 @@ sectigo_server: "https://acme.sectigo.com/v2/OV"
 
 sectigo_domains: "{{ ansible_fqdn }}"
 
+plugintype: "--apache"
+
 # example with hook:
 # sectigo_cron: '30 6 * * * certbot renew --post-hook "systemctl reload httpd"'
 sectigo_cron: '30 6 * * * certbot renew'

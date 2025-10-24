@@ -26,14 +26,16 @@
 - name: Register and obtain certs
   block:
     - shell: certbot register --server {{ sectigo_server }} --agree-tos --eab-kid {{ sectigo_eab_kid }} --eab-hmac-key {{ sectigo_eab_hmac_key }} --no-eff-email --email {{ sectigo_emailAddress }}
+      register: certbot_registered
+      failed_when: (certbot_registered.rc not in [ 0, 1 ])
 
     - name: certbot | cron.d | setup
       copy: content="{{ sectigo_cron }}" dest=/etc/cron.d/certbot mode=640 owner=root group=root
 
-    - shell: certbot certonly --apache --server {{ sectigo_server }} --non-interactive --agree-tos --domain {{ sectigo_domains }} {{ sectigo_san_domains }} {{ sectigo_additional_parameters }}
+    - shell: certbot certonly {{ plugintype }} --server {{ sectigo_server }} --non-interactive --agree-tos --domain {{ sectigo_domains }} {{ sectigo_san_domains }} {{ sectigo_additional_parameters }}
       when: sectigo_san_domains is defined
 
-    - shell: certbot certonly --apache --server {{ sectigo_server }} --non-interactive --agree-tos --domain {{ sectigo_domains }} {{ sectigo_additional_parameters }}
+    - shell: certbot certonly {{ plugintype }} --server {{ sectigo_server }} --non-interactive --agree-tos --domain {{ sectigo_domains }} {{ sectigo_additional_parameters }}
       when: sectigo_san_domains is not defined
 
   when: (sectigo_eab_kid is defined) and (sectigo_eab_hmac_key is defined) and (sectigo_emailAddress is defined) and (sectigo_domains is defined) and (not isRegistered.stat.exists)
