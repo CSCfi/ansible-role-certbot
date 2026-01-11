@@ -1,0 +1,5 @@
+---
+apache_service_name: apache2
+
+certbot_package_name: certbot
+python_apache_certbot_package_name: python3-certbot-apache
