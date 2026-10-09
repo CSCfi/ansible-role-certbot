@@ -39,7 +39,12 @@
     - shell: certbot register --server {{ sectigo_server }} --agree-tos --eab-kid {{ sectigo_eab_kid }} --eab-hmac-key {{ sectigo_eab_hmac_key }} --no-eff-email --email {{ sectigo_emailAddress }}
 
     - name: certbot | cron.d | setup
-      copy: content="{{ sectigo_cron }}" dest=/etc/cron.d/certbot mode=640 owner=root group=root
+      copy:
+        content: "{{ sectigo_cron }}\n"
+        dest: /etc/cron.d/certbot
+        mode: "0640"
+        owner: root
+        group: root
 
     - shell: certbot certonly {{ plugintype }} --server {{ sectigo_server }} --non-interactive --agree-tos --domain {{ sectigo_domains }} {{ sectigo_san_domains }} {{ sectigo_additional_parameters }}
       when: sectigo_san_domains is defined
